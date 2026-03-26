@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { TaskProvider } from '@/shared/context/TaskContext';
 import { Layout } from '@/features/layout/Layout';
 import { KanbanPage } from '@/features/kanban/KanbanPage';
@@ -11,7 +11,7 @@ import { TasksPage } from '@/features/tasks/TasksPage';
 function App() {
   return (
     <TaskProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Navigate to="/kanban" replace />} />
@@ -22,7 +22,7 @@ function App() {
             <Route path="tasks" element={<TasksPage />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </TaskProvider>
   );
 }
