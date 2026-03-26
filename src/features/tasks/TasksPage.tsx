@@ -3,11 +3,18 @@ import { Button } from '@/shared/components/Button';
 import { Input } from '@/shared/components/Input';
 import { useTasks } from '@/shared/context/TaskContext';
 import type { Task } from '@/types/tasks';
+import { mockCandidates } from '@/services/mockData';
+import { REJECTION_STATUSES } from '@/config/constants';
 
 export const TasksPage: React.FC = () => {
   const { tasks, setTasks } = useTasks();
   const [isAdding, setIsAdding] = useState(false);
   const [newTask, setNewTask] = useState({ title: '', description: '' });
+
+  const platformTasks = mockCandidates
+    .filter((c) => !(REJECTION_STATUSES as readonly string[]).includes(c.status))
+    .flatMap((c) => (c.contactPoints ?? []).map((p) => ({ candidate: c, point: p })))
+    .sort((a, b) => (a.point.dateTime > b.point.dateTime ? 1 : -1));
 
   const handleToggleComplete = (id: string) => {
     setTasks((prev) =>
@@ -84,6 +91,59 @@ export const TasksPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Platform tasks (contact points) */}
+      <div className="mb-8">
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg font-semibold text-neutral-800">Задачи по кандидатам</h2>
+          <span className="text-sm text-neutral-600">Всего: {platformTasks.length}</span>
+        </div>
+
+        {platformTasks.length === 0 ? (
+          <div className="text-sm text-neutral-500">Пока нет задач по кандидатам.</div>
+        ) : (
+          <div className="space-y-2">
+            {platformTasks.map(({ candidate, point }) => (
+              <div
+                key={`${candidate.id}-${point.id}`}
+                className="bg-white rounded-lg shadow-sm p-4 border border-neutral-200"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <div className="text-sm font-medium text-neutral-900">
+                      {point.title}{' '}
+                      <span className="text-xs font-semibold text-neutral-500">({point.type})</span>
+                    </div>
+                    <div className="text-xs text-neutral-500 mt-0.5">
+                      {new Date(point.dateTime).toLocaleString('ru-RU', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </div>
+                    <div className="text-sm text-neutral-700 mt-2">
+                      Кандидат: {candidate.lastName} {candidate.firstName}
+                    </div>
+                    {point.description && (
+                      <div className="text-sm text-neutral-600 mt-1">{point.description}</div>
+                    )}
+                  </div>
+
+                  <div className="text-xs text-neutral-500 whitespace-nowrap">
+                    {point.done ? (
+                      <span className="text-success-dark bg-success-light px-2 py-0.5 rounded-full">Выполнено</span>
+                    ) : (
+                      <span className="text-warning-dark bg-warning-light px-2 py-0.5 rounded-full">В работе</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Active Tasks */}
       <div className="space-y-2 mb-6">

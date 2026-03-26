@@ -28,11 +28,12 @@ export const CandidateModal: React.FC<CandidateModalProps> = ({
       id: '',
       firstName: '',
       lastName: '',
-      age: 0,
-      experienceYears: 0,
+      middleName: '',
+      phone: '',
+      birthDate: '',
       position: '',
       resumeLink: '',
-      status: 'New',
+      status: 'Новый',
       jobId: '',
       lastUpdated: new Date().toISOString(),
     }
@@ -87,21 +88,26 @@ export const CandidateModal: React.FC<CandidateModalProps> = ({
             onChange={(e) => handleChange('lastName', e.target.value)}
             placeholder="Введите фамилию"
           />
-          
+
           <Input
-            label="Возраст"
-            type="number"
-            value={formData.age}
-            onChange={(e) => handleChange('age', parseInt(e.target.value) || 0)}
-            placeholder="Введите возраст"
+            label="Отчество"
+            value={formData.middleName || ''}
+            onChange={(e) => handleChange('middleName', e.target.value)}
+            placeholder="Введите отчество"
+          />
+
+          <Input
+            label="Телефон"
+            value={formData.phone || ''}
+            onChange={(e) => handleChange('phone', e.target.value)}
+            placeholder="+7 ..."
           />
           
           <Input
-            label="Лет опыта"
-            type="number"
-            value={formData.experienceYears}
-            onChange={(e) => handleChange('experienceYears', parseInt(e.target.value) || 0)}
-            placeholder="Введите опыт"
+            label="Дата рождения"
+            type="date"
+            value={formData.birthDate || ''}
+            onChange={(e) => handleChange('birthDate', e.target.value)}
           />
           
           <Select

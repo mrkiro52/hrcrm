@@ -17,10 +17,12 @@ import type { Candidate } from '@/types/models';
 import { mockCandidates } from '@/services/mockData';
 import { CANDIDATE_STATUSES, POSITIONS } from '@/config/constants';
 import { formatDate } from '@/shared/utils/helpers';
+import { useNavigate } from 'react-router-dom';
 
 const columnHelper = createColumnHelper<Candidate>();
 
 export const CandidateListPage: React.FC = () => {
+  const navigate = useNavigate();
   const [data] = useState<Candidate[]>(mockCandidates);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -49,10 +51,10 @@ export const CandidateListPage: React.FC = () => {
           <div className="text-sm text-neutral-600">{info.getValue()}</div>
         ),
       }),
-      columnHelper.accessor('experienceYears', {
-        header: 'Лет опыта',
+      columnHelper.accessor('phone', {
+        header: 'Телефон',
         cell: (info) => (
-          <div className="text-sm text-neutral-600">{info.getValue()}</div>
+          <div className="text-sm text-neutral-600">{info.getValue() || '—'}</div>
         ),
       }),
       columnHelper.accessor('status', {
@@ -91,7 +93,7 @@ export const CandidateListPage: React.FC = () => {
       const matchesPosition = positionFilter === 'all' || candidate.position === positionFilter;
       const matchesSearch =
         searchQuery === '' ||
-        `${candidate.firstName} ${candidate.lastName}`
+        `${candidate.firstName} ${candidate.lastName} ${candidate.phone || ''}`
           .toLowerCase()
           .includes(searchQuery.toLowerCase());
       
@@ -110,8 +112,7 @@ export const CandidateListPage: React.FC = () => {
   });
   
   const handleRowClick = (candidate: Candidate) => {
-    setSelectedCandidate(candidate);
-    setIsModalOpen(true);
+    navigate(`/candidates/${candidate.id}`);
   };
   
   const handleCreateNew = () => {
@@ -128,7 +129,7 @@ export const CandidateListPage: React.FC = () => {
         <div className="flex items-center space-x-4 mb-4">
           <div className="w-64">
             <Input
-              placeholder="Поиск по имени..."
+              placeholder="Поиск по имени или телефону..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

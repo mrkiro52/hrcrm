@@ -3,12 +3,12 @@ import { DragDropContext, Droppable, Draggable, type DropResult } from 'react-be
 import { Avatar } from '@/shared/components/Avatar';
 import type { Candidate, CandidateStatus } from '@/types/models';
 import { mockCandidates } from '@/services/mockData';
-import { CANDIDATE_STATUSES } from '@/config/constants';
+import { KANBAN_STATUSES } from '@/config/constants';
 
 export const KanbanPage: React.FC = () => {
   const [candidates, setCandidates] = useState<Candidate[]>(mockCandidates);
   
-  const groupedCandidates = CANDIDATE_STATUSES.reduce((acc, status) => {
+  const groupedCandidates = KANBAN_STATUSES.reduce((acc, status) => {
     acc[status] = candidates.filter((c) => c.status === status);
     return acc;
   }, {} as Record<CandidateStatus, Candidate[]>);
@@ -37,7 +37,7 @@ export const KanbanPage: React.FC = () => {
       
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="grid grid-cols-5 gap-4 h-[calc(100vh-12rem)]">
-          {CANDIDATE_STATUSES.map((status) => (
+          {KANBAN_STATUSES.map((status) => (
             <div key={status} className="flex flex-col">
               <div className="mb-3 flex items-center justify-between">
                 <h3 className="font-semibold text-neutral-700 text-sm uppercase">
@@ -88,7 +88,7 @@ export const KanbanPage: React.FC = () => {
                               </div>
                             </div>
                             <div className="flex items-center justify-between text-xs text-neutral-500">
-                              <span>{candidate.experienceYears} лет опыта</span>
+                              <span>{candidate.phone || '—'}</span>
                               <a
                                 href={candidate.resumeLink}
                                 target="_blank"
