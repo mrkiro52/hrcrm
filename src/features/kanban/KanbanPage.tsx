@@ -5,14 +5,6 @@ import type { Candidate, CandidateStatus } from '@/types/models';
 import { mockCandidates } from '@/services/mockData';
 import { CANDIDATE_STATUSES } from '@/config/constants';
 
-const statusColors: Record<CandidateStatus, string> = {
-  'New': 'bg-blue-100 border-blue-300',
-  'In Progress': 'bg-yellow-100 border-yellow-300',
-  'Interview': 'bg-purple-100 border-purple-300',
-  'Offered': 'bg-green-100 border-green-300',
-  'Rejected': 'bg-red-100 border-red-300',
-};
-
 export const KanbanPage: React.FC = () => {
   const [candidates, setCandidates] = useState<Candidate[]>(mockCandidates);
   

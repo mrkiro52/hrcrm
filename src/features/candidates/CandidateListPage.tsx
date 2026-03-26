@@ -21,7 +21,7 @@ import { formatDate } from '@/shared/utils/helpers';
 const columnHelper = createColumnHelper<Candidate>();
 
 export const CandidateListPage: React.FC = () => {
-  const [data, setData] = useState<Candidate[]>(mockCandidates);
+  const [data] = useState<Candidate[]>(mockCandidates);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [positionFilter, setPositionFilter] = useState<string>('all');

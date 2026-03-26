@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Avatar } from '@/shared/components/Avatar';
-import { APP_CONFIG } from '@/config/constants';
 
 export const Header: React.FC = () => {
   return (
